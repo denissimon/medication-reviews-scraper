@@ -58,7 +58,7 @@ def get_data(html: str) -> List[Dict[str, str | List[str]]]:
 def print_log_info(message: str, data: List[str]) -> None:
     print("\n")
     print("======================")
-    print(message+":")
+    print(message + ":")
     print(data)
     print("======================")
     print("\n")
