@@ -138,10 +138,9 @@ def main(check_for_uniqueness: bool = False):
                     not_processed_links.append(link)
                     print_log_info("Not processed links", not_processed_links)
                 else:                    
-                    for i, row in enumerate(data):
-                        i += 1
+                    for number, row in enumerate(data):
                         print("\n")
-                        print("#", i)
+                        print("#", number+1)
                         
                         rating = row[0]
                         print("Rating:", rating)
