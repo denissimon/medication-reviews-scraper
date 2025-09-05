@@ -8,9 +8,10 @@ from typing import (
     Any, 
     List
 )
-
-# Function to read data from JSON
+ 
 def read(filename: str) -> Any:
+    """Function to read data from JSON
+    """
     with open(filename) as json_file:
         return json.load(json_file)
 
@@ -104,16 +105,15 @@ def main(check_for_uniqueness: bool = False):
         print("\n")
         print("----------------------------------------------------------------------------")
 
-        current_data: List[str] = []
-
         if i > 0:
             random_number = uniform(2,4)
             sleep(random_number)
 
+        current_data: List[str] = []
+
         url = link
         print("Url:", url)
 
-        proxy = {"http": "http://" + choice(proxies)}
         headers = {
             "User-Agent": choice(useragents), 
             "referer":"https://www.bing.com/",
@@ -122,6 +122,8 @@ def main(check_for_uniqueness: bool = False):
             "Accept-Language":"en-US,en;q=0.8,es;q=0.7",
             "Upgrade-Insecure-Requests":"1"
         }
+
+        proxy = {"http": choice(proxies)}
 
         try:
             html = get_html(url, headers, proxy)

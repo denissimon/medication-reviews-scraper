@@ -10,8 +10,9 @@ from typing import (
     Dict
 )
 
-# Function to read data from JSON
 def read(filename: str) -> Any:
+    """Function to read data from JSON
+    """
     with open(filename) as json_file:
         return json.load(json_file)
 
@@ -80,7 +81,6 @@ def main(letters_for_processing: List[str]):
         url = site_url + letter
         print("Url:", url)
 
-        proxy = {"http": "http://" + choice(proxies)}
         headers = {
             "User-Agent": choice(useragents), 
             "referer":"https://www.google.com/",
@@ -89,6 +89,8 @@ def main(letters_for_processing: List[str]):
             "Accept-Language":"en-US,en;q=0.9,es;q=0.8",
             "Upgrade-Insecure-Requests":"1"
         }
+        
+        proxy = {"http": choice(proxies)}
 
         try:
             html = get_html(url, headers, proxy)
