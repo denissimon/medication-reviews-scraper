@@ -22,7 +22,7 @@ The first step is to extract the drugs we want to get reviews for later and gene
 
 ### Usage
 
-If the argument is not provided, the script will start working on all letters of the English alphabet (it may take some time):
+If the argument is not provided, the script will start working on all letters of the English alphabet:
 
 ```sh
 python script1.py
@@ -75,7 +75,7 @@ The second step is to extract data from the review pages for each drug found in 
   "sex": "...",
   "age": "21",
   "duration_and_dosage": "2 months / 1X day",
-  "date added": "10/29/2022"
+  "date added": "10/29/2024"
  }]
 ```
 
@@ -102,7 +102,7 @@ When the script is run again, the number of links remaining to be processed will
 
 The extracted data is appended to the existing data and written to `all_reviews.json`.
 
-You can also pass the `check_for_uniqueness` argument to check each new review for uniqueness before adding it, and reliably avoid duplicates if any (however, this will slightly increase the script execution time):
+You can also pass the `check_for_uniqueness` argument to check each new review for uniqueness before adding it, and reliably avoid duplicates if any:
 
 ```sh
 python script2.py check_for_uniqueness
