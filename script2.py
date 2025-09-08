@@ -4,15 +4,16 @@ from random import choice, uniform, shuffle
 from time import sleep
 import json
 import sys
+import os
 from typing import (
     Any, 
     List
 )
  
-def read(filename: str) -> Any:
+def read(filepath: str) -> Any:
     """Function to read data from JSON
     """
-    with open(filename) as json_file:
+    with open(filepath) as json_file:
         return json.load(json_file)
 
 def get_html(url: str, headers = None, proxy = None) -> str:
@@ -47,31 +48,40 @@ def get_data(soup: BeautifulSoup) -> List[List[str]]:
 
     return data
 
-def update_cache(processed_link: str) -> None:
+def update_cache(processed_link: str, filepath: str) -> None:
     print(update_cache.__name__ + " for " + processed_link)
     
-    cache = read("output/cache")
-    print("len of cache: ", len(cache))
+    cache = read(filepath)
+    print("len of cache:", len(cache))
     cache.remove(processed_link)
-    print("len of cache after removing processed_link: ", len(cache))
+    print("len of cache after removing processed_link:", len(cache))
 
-    with open("output/cache", "w") as outfile:
+    with open(filepath, "w") as outfile:
         json.dump(cache, outfile)
 
-def rewrite_json_file(data: List[str], file: str) -> None:
+def delete_file(filepath: str) -> None:
+    print(delete_file.__name__ + " " + filepath)
+
+    if os.path.exists(filepath):
+        os.remove(filepath)
+
+def rewrite_json_file(data: List[str], filepath: str) -> None:
     """Rewrite the existing JSON file by appending new data
     """
     try:
-        result_json = read("output/"+file)
+        result_json = read(filepath)
         print("\n")
-        print("len of " + file.split(".")[0] + ": ", len(result_json))
+        filename = os.path.basename(filepath).split('/')[-1]
+        print("len of " + filename.split(".")[0] + ":", len(result_json))
+        
         for item in data:
             result_json.append(item)            
-        print("len of " + file.split(".")[0] + " after appending: ", len(result_json))
-        with open("output/" + file, "w") as outfile:
+        print("len of " + filename.split(".")[0] + " after appending:", len(result_json))
+        
+        with open(filepath, "w") as outfile:
             json.dump(result_json, outfile)
     except:
-        with open("output/" + file, "w") as outfile:
+        with open(filepath, "w") as outfile:
             json.dump(data, outfile)
 
 def print_log_info(message: str, data: List[str]) -> None:
@@ -86,15 +96,19 @@ def main(check_for_uniqueness: bool = False):
     useragents = open("useragents.txt").read().split("\n")
     proxies = open("proxies.txt").read().split("\n")
 
+    all_drugs_path = "output/all_drugs.json"
+    all_reviews_path = "output/all_reviews.json"
+    cache_path = "output/cache"
+
     current_links: List[str] = []
 
     try:
-        current_links = read("output/cache")
+        current_links = read(cache_path)
     except:
-        drugs = read("output/all_drugs.json")
+        drugs = read(all_drugs_path)
         for drug in drugs:
             current_links.append(drug["link"])
-        with open("output/cache", "w") as outfile:
+        with open(cache_path, "w") as outfile:
             json.dump(current_links, outfile)
 
     # shuffle(current_links) # Optionally
@@ -164,11 +178,7 @@ def main(check_for_uniqueness: bool = False):
                         print("Age:", age)
                         
                         duration_and_dosage = row[6]
-                        duration_and_dosage = duration_and_dosage.replace("years","years / ")
-                        duration_and_dosage = duration_and_dosage.replace("months","months / ")
-                        duration_and_dosage = duration_and_dosage.replace("weeks","weeks / ")
-                        duration_and_dosage = duration_and_dosage.replace("days","days / ")
-                        duration_and_dosage = duration_and_dosage.strip()
+                        duration_and_dosage = duration_and_dosage.replace("years","years / ").replace("months","months / ").replace("weeks","weeks / ").replace("days","days / ").strip()
                         if duration_and_dosage[-2:] == " /":
                             duration_and_dosage = duration_and_dosage[:-2]
                         print("Duration / Dosage:", duration_and_dosage)
@@ -178,11 +188,11 @@ def main(check_for_uniqueness: bool = False):
                         print("Date added:", date_added)
 
                         try:
-                            check_reviews = read("output/all_reviews.json")
+                            reviews = read(all_reviews_path)
                             
                             if check_for_uniqueness:
                                 is_unique = True
-                                for review in check_reviews:
+                                for review in reviews:
                                     if review["rating"] == rating and review["reason"] == reason and review["side_effects"] == side_effects and review["comments"] == comments and review["sex"] == sex and review["age"] == age and review["duration_and_dosage"] == duration_and_dosage and review["date added"] == date_added:
                                         is_unique = False
                                         break
@@ -192,11 +202,11 @@ def main(check_for_uniqueness: bool = False):
                                 current_data.append({"drug":drug_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added}) 
                         except:
                             current_data.append({"drug":drug_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})
-                            rewrite_json_file([], "all_reviews.json")
+                            rewrite_json_file([], all_reviews_path)
                     
-                    rewrite_json_file(current_data, "all_reviews.json")
+                    rewrite_json_file(current_data, all_reviews_path)
 
-                    update_cache(link)
+                    update_cache(link, cache_path)
             else:
                 not_processed_links.append(link)
                 print_log_info("Not processed links", not_processed_links)
@@ -207,7 +217,11 @@ def main(check_for_uniqueness: bool = False):
             continue
 
     print_log_info("Not processed links", not_processed_links)
-
+    
+    cache = open(cache_path).read()
+    if cache == "[]":
+        delete_file(cache_path)        
+    
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         ini_str = sys.argv[1]

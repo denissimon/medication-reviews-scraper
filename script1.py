@@ -10,10 +10,10 @@ from typing import (
     Dict
 )
 
-def read(filename: str) -> Any:
+def read(filepath: str) -> Any:
     """Function to read data from JSON
     """
-    with open(filename) as json_file:
+    with open(filepath) as json_file:
         return json.load(json_file)
 
 def get_html(url: str, headers = None, proxy = None) -> str:
@@ -52,7 +52,7 @@ def get_data(html: str) -> List[Dict[str, str | List[str]]]:
         drug_names.append(drug_name)
     ####
 
-    print("len of new data: ", len(data))
+    print("len of new data:", len(data))
 
     return data
 
@@ -104,10 +104,10 @@ def main(letters_for_processing: List[str]):
         path = "output/all_drugs.json"
         try:
             result_json = read(path)
-            print("len of result_json: ", len(result_json))
+            print("len of result_json:", len(result_json))
             for item in data:
                 result_json.append(item)
-            print("len of result_json after appending: ", len(result_json))
+            print("len of result_json after appending:", len(result_json))
             if len(data) == 0:
                 not_processed_letters.append(letter)
             else:
