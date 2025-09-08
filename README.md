@@ -108,11 +108,20 @@ You can also pass the `check_for_uniqueness` argument to check each new review f
 python script2.py check_for_uniqueness
 ```
 
-***
-Note that, by default, `script1.py` collects links only from the 1st page of drug reviews. There may be several pages. In order to get reviews from other pages, you need to edit the `all_drugs.json` file, adding `&page=NUMBER` to each link of interest.
+When the script finishes running, if there are no links left in `cache`, it is deleted automatically.
+
+Note that, by default, `script1.py` collects links only from the 1st page of drug reviews. There may be several pages. In order to get reviews from other pages, you need to edit the `all_drugs.json`, adding `&page=N` to each link of interest.
 
 Example:
 
 1st page: https://www.askapatient.com/viewrating.asp?drug=18662&name=ACCUTANE
 
 2nd page: https://www.askapatient.com/viewrating.asp?drug=18662&name=ACCUTANE&page=2
+
+## Installation
+
+The code was written and tested in Python 3.13.7. Make sure that you're using Python 3.10+.
+
+1. Clone or download this repo.
+
+2. Create a Python virtual environment and run `pip install -r requirements.txt` inside this repo.
