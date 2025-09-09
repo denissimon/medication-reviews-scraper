@@ -35,7 +35,7 @@ def get_data(html: str) -> List[Dict[str, str | List[str]]]:
 
     data: List[Dict[str, str | List[str]]] = []
 
-    drug_names: List[str] = []
+    medication_names: List[str] = []
 
     #### By brand name:
     soup = BeautifulSoup(html_part1, "lxml")
@@ -47,9 +47,9 @@ def get_data(html: str) -> List[Dict[str, str | List[str]]]:
         ingredients_arr = ingredients.split(";")
         for i in range(len(ingredients_arr)):
             ingredients_arr[i] = ingredients_arr[i].strip()
-        drug_name = el.contents[0].contents[0]
-        data.append({"drug":drug_name, "link":"https://www.askapatient.com/"+str(el.a.get("href")), "ingredients":ingredients_arr})
-        drug_names.append(drug_name)
+        medication_name = el.contents[0].contents[0]
+        data.append({"medication":medication_name, "link":"https://www.askapatient.com/"+str(el.a.get("href")), "ingredients":ingredients_arr})
+        medication_names.append(medication_name)
     ####
 
     print("len of new data:", len(data))
@@ -101,7 +101,7 @@ def main(letters_for_processing: List[str]):
             continue
 
         # Rewrite existing JSON file by appending new data
-        path = "output/all_drugs.json"
+        path = "output/all_medications.json"
         try:
             result_json = read(path)
             print("len of result_json:", len(result_json))
@@ -133,6 +133,6 @@ if __name__ == "__main__":
             letters_for_doing.append(l)
         main(letters_for_doing)
     else:
-        with open("output/all_drugs.json", "w") as outfile:
+        with open("output/all_medications.json", "w") as outfile:
             json.dump("", outfile)
         main(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"])

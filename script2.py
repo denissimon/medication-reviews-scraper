@@ -96,7 +96,7 @@ def main(check_for_uniqueness: bool = False):
     useragents = open("useragents.txt").read().split("\n")
     proxies = open("proxies.txt").read().split("\n")
 
-    all_drugs_path = "output/all_drugs.json"
+    all_medications_path = "output/all_medications.json"
     all_reviews_path = "output/all_reviews.json"
     cache_path = "output/cache"
 
@@ -105,9 +105,9 @@ def main(check_for_uniqueness: bool = False):
     try:
         current_links = read(cache_path)
     except:
-        drugs = read(all_drugs_path)
-        for drug in drugs:
-            current_links.append(drug["link"])
+        medications = read(all_medications_path)
+        for medication in medications:
+            current_links.append(medication["link"])
         with open(cache_path, "w") as outfile:
             json.dump(current_links, outfile)
 
@@ -145,7 +145,7 @@ def main(check_for_uniqueness: bool = False):
             if html != "":
                 soup = BeautifulSoup(html, "lxml")
 
-                drug_name = soup.title.string.split(":")[0]
+                medication_name = soup.title.string.split(":")[0]
                 
                 data = get_data(soup)
                 print("Number of reviews:", len(data))
@@ -197,11 +197,11 @@ def main(check_for_uniqueness: bool = False):
                                         is_unique = False
                                         break
                                 if is_unique:
-                                    current_data.append({"drug":drug_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})                                    
+                                    current_data.append({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})                                    
                             else:
-                                current_data.append({"drug":drug_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added}) 
+                                current_data.append({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added}) 
                         except:
-                            current_data.append({"drug":drug_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})
+                            current_data.append({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})
                             rewrite_json_file([], all_reviews_path)
                     
                     rewrite_json_file(current_data, all_reviews_path)
