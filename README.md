@@ -1,6 +1,6 @@
 # Medication Reviews Scraper
 
-This scraper collects a list of medications and reviews on them from [AskaPatient.com](https://www.askapatient.com). The collected data is processed and saved in a structured JSON format for subsequent use in NLP tasks, ML model training.
+This scraper collects a list of medications and reviews on them from [AskaPatient.com](https://www.askapatient.com). At the moment, there are more than 100k patient reviews for 2171 medications A-Z. The collected data is processed and saved in a structured JSON format for subsequent use in NLP tasks, ML model training.
 
 The folder where the results are saved is [`output`](https://github.com/denissimon/medication-reviews-scraper/tree/main/output). The [`output/examples`](https://github.com/denissimon/medication-reviews-scraper/tree/main/output/examples) folder contains some examples of finished results.
 
