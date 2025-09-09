@@ -1,8 +1,8 @@
-# Drug Reviews Scraper
+# Medication Reviews Scraper
 
-This scraper collects a list of drugs and reviews about them from the [AskaPatient.com](https://www.askapatient.com). The collected data is processed and saved in a structured format in JSON files for subsequent use in NLP tasks, ML model training.
+This scraper collects a list of medications and reviews on them from [AskaPatient.com](https://www.askapatient.com). The collected data is processed and saved in a structured JSON format for subsequent use in NLP tasks, ML model training.
 
-The folder where the result is saved is [`output`](https://github.com/denissimon/drug-reviews-scraper/tree/main/output). The [`output/examples`](https://github.com/denissimon/drug-reviews-scraper/tree/main/output/examples) folder contains some examples of finished results.
+The folder where the results are saved is [`output`](https://github.com/denissimon/medication-reviews-scraper/tree/main/output). The [`output/examples`](https://github.com/denissimon/medication-reviews-scraper/tree/main/output/examples) folder contains some examples of finished results.
 
 `proxies.txt` - a set of proxy server addresses.
 
@@ -10,11 +10,11 @@ The folder where the result is saved is [`output`](https://github.com/denissimon
 
 ## script1.py 
 
-The first step is to extract the drugs we want to get reviews for later and generate `all_drugs.json` in the following format:
+The first step is to extract the medications we want to get reviews for later and generate `all_medications.json` in the following format:
 
 ```json
 [{
-    "drug": "...",
+    "medication": "...",
     "link": "...",
     "ingredients": ["...", "..."]
 }]
@@ -41,7 +41,7 @@ python script1.py "'Y'"
 python script1.py "'A','B'"
 ```
 
-As an option, you can run the script sequentially for each letter and rename the output `all_drugs.json` to a file corresponding to the letter, for example, `drugs_Y.json`.
+As an option, you can run the script sequentially for each letter and rename the output `all_medications.json` to a file corresponding to the letter, for example, `medications_Y.json`.
 
 In case, for some reason (e.g., due to an error 403), part of the letters was not fully processed, this list is displayed in the terminal:
 
@@ -58,15 +58,15 @@ Then you can run the script again, passing the list of these letters:
 python script1.py "'M','N'"
 ```
 
-The extracted data will be added to the resulting file `all_drugs.json`.
+The extracted data will be added to the resulting file `all_medications.json`.
 
 ## script2.py
 
-The second step is to extract data from the review pages for each drug found in `all_drugs.json` and generate `all_reviews.json` in the following format:
+The second step is to extract data from the review pages for each medication found in `all_medications.json` and generate `all_reviews.json` in the following format:
 
 ```json
 [{
-  "drug": "...",
+  "medication": "...",
   "link": "...",
   "rating": "5",
   "reason": "...",
@@ -85,7 +85,7 @@ The second step is to extract data from the review pages for each drug found in 
 python script2.py
 ```
 
-When running the script, all links are first taken from `output/all_drugs.json`, and written to the cache `output/cache`.
+When running the script, all links are first taken from `output/all_medications.json`, and written to the cache `output/cache`.
 
 During the script's execution, successfully processed links are removed from the cache, and `cache` is overwritten.
 
@@ -110,7 +110,7 @@ python script2.py check_for_uniqueness
 
 When the script finishes running, if there are no links left in `cache`, it is deleted automatically.
 
-Note that, by default, `script1.py` collects links only from the 1st page of drug reviews. There may be several pages. In order to get reviews from other pages, you need to edit the `all_drugs.json`, adding `&page=N` to each link of interest.
+Note that, by default, `script1.py` collects links only from the 1st page of medication reviews. There may be several pages. In order to get reviews from other pages, you need to edit the `all_medications.json`, adding `&page=N` to each link of interest.
 
 Example:
 
