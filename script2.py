@@ -197,11 +197,11 @@ def main(check_for_uniqueness: bool = False):
                                         is_unique = False
                                         break
                                 if is_unique:
-                                    current_data.append({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})                                    
+                                    current_data.append(str({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added}))                                    
                             else:
-                                current_data.append({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added}) 
+                                current_data.append(str({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})) 
                         except:
-                            current_data.append({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added})
+                            current_data.append(str({"medication":medication_name, "link":link, "rating":rating, "reason":reason, "side_effects":side_effects, "comments":comments, "sex":sex, "age":age, "duration_and_dosage":duration_and_dosage, "date added":date_added}))
                             rewrite_json_file([], all_reviews_path)
                     
                     rewrite_json_file(current_data, all_reviews_path)
